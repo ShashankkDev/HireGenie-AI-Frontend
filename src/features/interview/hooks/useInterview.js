@@ -74,19 +74,24 @@ export const useInterview = () => {
 
   const getResumePdf = async (interviewReportId) => {
     setLoading(true);
-
     try {
-      const response = await generateResumePdf({ interviewReportId });
+      const blob = await generateResumePdf({ interviewReportId });
 
-      const url = window.URL.createObjectURL(response);
+      // ✅ Verify blob is valid before downloading
+      console.log("Blob size:", blob.size, "Blob type:", blob.type);
 
+      if (blob.size < 1000) {
+        console.error("PDF blob too small, likely corrupted!");
+        return;
+      }
+
+      const url = window.URL.createObjectURL(blob);
       const link = document.createElement("a");
       link.href = url;
       link.download = `resume_${interviewReportId}.pdf`;
-
       document.body.appendChild(link);
       link.click();
-
+      document.body.removeChild(link); // ✅ cleanup properly
       window.URL.revokeObjectURL(url);
     } catch (error) {
       console.log(error);

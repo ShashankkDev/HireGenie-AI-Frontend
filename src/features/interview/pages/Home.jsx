@@ -32,12 +32,12 @@ const Home = () => {
         resumeFile,
       });
 
-      if (!data || !data.interviewReport) {
+      if (!data) {
         alert("Failed to generate report");
         return;
       }
 
-      navigate(`/interview/${data.interviewReport._id}`);
+      navigate(`/interview/${data._id}`);
     } catch (err) {
       console.error(err);
       alert("Something went wrong");

@@ -18,13 +18,30 @@ const Home = () => {
   const { handleLogout } = useAuth();
 
   const handleGenerateReport = async () => {
-    const resumeFile = resumeInputRef.current.files[0];
-    const data = await generateReport({
-      jobDescription,
-      selfDescription,
-      resumeFile,
-    });
-    navigate(`/interview/${data._id}`);
+    try {
+      const resumeFile = resumeInputRef.current?.files?.[0];
+
+      if (!resumeFile && !selfDescription) {
+        alert("Please upload resume OR enter self description");
+        return;
+      }
+
+      const data = await generateReport({
+        jobDescription,
+        selfDescription,
+        resumeFile,
+      });
+
+      if (!data || !data.interviewReport) {
+        alert("Failed to generate report");
+        return;
+      }
+
+      navigate(`/interview/${data.interviewReport._id}`);
+    } catch (err) {
+      console.error(err);
+      alert("Something went wrong");
+    }
   };
 
   const handleRemoveFile = () => {

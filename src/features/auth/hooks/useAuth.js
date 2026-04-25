@@ -39,21 +39,40 @@ export const useAuth = () => {
     }
   };
 
+  // useEffect(() => {
+  //   const getAndSetUser = async () => {
+  //     try {
+  //       const data = await getMe();
+  //       setUser(data.user);
+  //     } catch (err) {
+  //       setUser(null);
+  //     } finally {
+  //       setLoading(false);
+  //     }
+  //   };
+
+  //   if (!user) {
+  //     getAndSetUser();
+  //   }
+  // }, []);
+
   useEffect(() => {
     const getAndSetUser = async () => {
       try {
         const data = await getMe();
         setUser(data.user);
       } catch (err) {
+        if (err.response?.status !== 401) {
+          console.log(err.response?.data || err.message);
+        }
         setUser(null);
       } finally {
         setLoading(false);
       }
     };
 
-    if (!user) {
-      getAndSetUser();
-    }
+    getAndSetUser();
   }, []);
+
   return { user, loading, handleRegister, handleLogin, handleLogout };
 };

@@ -352,22 +352,50 @@ const Home = () => {
                 className="report-item"
                 onClick={() => navigate(`/interview/${report._id}`)}
               >
-                <h3>{report.title || "Untitled Position"}</h3>
-                <p className="report-meta">
-                  Generated on {new Date(report.createdAt).toLocaleDateString()}
-                </p>
-                <p
-                  className={`match-score ${report.matchScore >= 80 ? "score--high" : report.matchScore >= 60 ? "score--mid" : "score--low"}`}
-                >
-                  Match Score: {report.matchScore}%
-                </p>
+                <div className="report-content">
+                  <h3>{report.title || "Untitled Position"}</h3>
+                  <p className="report-meta">
+                    Generated on{" "}
+                    {new Date(report.createdAt).toLocaleDateString()}
+                  </p>
+                  <p
+                    className={`match-score ${
+                      report.matchScore >= 80
+                        ? "score--high"
+                        : report.matchScore >= 60
+                          ? "score--mid"
+                          : "score--low"
+                    }`}
+                  >
+                    Match Score: {report.matchScore}%
+                  </p>
+                </div>
+
                 <button
+                  className="delete-btn"
                   onClick={(e) => {
-                    e.stopPropagation(); // 🔥 important (click conflict avoid)
+                    e.stopPropagation();
                     deleteReport(report._id);
                   }}
+                  title="Delete report"
                 >
-                  Delete
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    width="18"
+                    height="18"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    strokeWidth="2"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                  >
+                    <path d="M3 6h18" />
+                    <path d="M8 6V4h8v2" />
+                    <path d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6" />
+                    <path d="M10 11v6" />
+                    <path d="M14 11v6" />
+                  </svg>
                 </button>
               </li>
             ))}

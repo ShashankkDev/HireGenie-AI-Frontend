@@ -60,11 +60,13 @@ export const useAuth = () => {
     const getAndSetUser = async () => {
       try {
         const data = await getMe();
-        setUser(data.user);
-      } catch (err) {
-        if (err.response?.status !== 401) {
-          console.log(err.response?.data || err.message);
+
+        if (data?.user) {
+          setUser(data.user);
+        } else {
+          setUser(null);
         }
+      } catch (err) {
         setUser(null);
       } finally {
         setLoading(false);

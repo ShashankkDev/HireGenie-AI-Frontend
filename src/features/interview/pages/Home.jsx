@@ -5,7 +5,7 @@ import { Link, useNavigate } from "react-router";
 import { useAuth } from "../../auth/hooks/useAuth.js";
 
 const Home = () => {
-  const { loading, generateReport, reports, status, setStatus } =
+  const { loading, generateReport, reports, status, setStatus, deleteReport } =
     useInterview();
   const [jobDescription, setJobDescription] = useState("");
   const [selfDescription, setSelfDescription] = useState("");
@@ -361,6 +361,14 @@ const Home = () => {
                 >
                   Match Score: {report.matchScore}%
                 </p>
+                <button
+                  onClick={(e) => {
+                    e.stopPropagation(); // 🔥 important (click conflict avoid)
+                    deleteReport(report._id);
+                  }}
+                >
+                  Delete
+                </button>
               </li>
             ))}
           </ul>

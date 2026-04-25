@@ -3,6 +3,7 @@ import {
   generateInterviewReport,
   getInterviewReportById,
   generateResumePdf,
+  deleteInterviewReport,
 } from "../services/interview.api";
 import { useContext, useEffect } from "react";
 import { InterviewContext } from "../interview.context";
@@ -113,6 +114,17 @@ export const useInterview = () => {
     }
   };
 
+  const deleteReport = async (id) => {
+    try {
+      await deleteInterviewReport(id);
+
+      // UI update instantly
+      setReports((prev) => prev.filter((r) => r._id !== id));
+    } catch (err) {
+      console.log(err);
+    }
+  };
+
   useEffect(() => {
     if (interviewId) {
       getReportById(interviewId);
@@ -131,5 +143,6 @@ export const useInterview = () => {
     getResumePdf,
     status,
     setStatus,
+    deleteReport,
   };
 };

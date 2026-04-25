@@ -16,8 +16,16 @@ export const useInterview = () => {
     throw new Error("useInterview must be used within an InterviewProvider");
   }
 
-  const { loading, setLoading, report, setReport, reports, setReports } =
-    context;
+  const {
+    loading,
+    setLoading,
+    report,
+    setReport,
+    reports,
+    setReports,
+    status,
+    setStatus,
+  } = context;
 
   const generateReport = async ({
     jobDescription,
@@ -28,16 +36,25 @@ export const useInterview = () => {
     let response = null;
 
     try {
+      setStatus("Uploading your data...");
+
       response = await generateInterviewReport({
         jobDescription,
         selfDescription,
         resumeFile,
       });
+
+      setStatus("Generating AI interview plan...");
+
       setReport(response.interviewReport);
-      return response.interviewReport; // ✅ yahi return karo
+
+      setStatus("Finalizing your strategy...");
+
+      return response.interviewReport;
     } catch (error) {
       console.log(error);
-      return null; // ✅ important
+      setStatus("Something went wrong ❌");
+      return null;
     } finally {
       setLoading(false);
     }

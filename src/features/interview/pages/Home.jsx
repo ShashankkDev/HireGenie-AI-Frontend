@@ -5,7 +5,8 @@ import { Link, useNavigate } from "react-router";
 import { useAuth } from "../../auth/hooks/useAuth.js";
 
 const Home = () => {
-  const { loading, generateReport, reports } = useInterview();
+  const { loading, generateReport, reports, status, setStatus } =
+    useInterview();
   const [jobDescription, setJobDescription] = useState("");
   const [selfDescription, setSelfDescription] = useState("");
 
@@ -26,6 +27,8 @@ const Home = () => {
         return;
       }
 
+      setStatus("Uploading your data...");
+
       const data = await generateReport({
         jobDescription,
         selfDescription,
@@ -37,6 +40,7 @@ const Home = () => {
         return;
       }
 
+      setStatus("Redirecting...");
       navigate(`/interview/${data._id}`);
     } catch (err) {
       console.error(err);
@@ -56,7 +60,9 @@ const Home = () => {
       <main className="loading-screen">
         <div className="loading-glow" />
         <div className="loader"></div>
-        <h1 className="loading-text">Generating your interview plan</h1>
+        <h1 className="loading-text">
+          {status || "Generating your interview plan..."}
+        </h1>
       </main>
     );
   }

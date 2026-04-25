@@ -129,5 +129,7 @@ export const useInterview = () => {
     getReportById,
     getReports,
     getResumePdf,
+    status,
+    setStatus,
   };
 };

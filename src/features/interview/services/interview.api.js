@@ -16,9 +16,14 @@ export const generateInterviewReport = async ({
   const formData = new FormData();
   formData.append("jobDescription", jobDescription);
   formData.append("selfDescription", selfDescription);
-  formData.append("resume", resumeFile);
 
-  const response = await api.post("/api/interview/", formData);
+  if (resumeFile) {
+    formData.append("resume", resumeFile);
+  }
+
+  const response = await api.post("/api/interview", formData, {
+    withCredentials: true, // 🔥 FORCE IT
+  });
 
   return response.data;
 };
@@ -50,6 +55,7 @@ export const generateResumePdf = async ({ interviewReportId }) => {
     null,
     {
       responseType: "blob",
+      withCredentials: true,
     },
   );
 
